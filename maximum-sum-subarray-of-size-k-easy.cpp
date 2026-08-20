@@ -5,23 +5,26 @@ using namespace std;
 
 class Solution {
   public:
-    int findMaxSumSubArray(int k, const vector<int>& arr) 
-    {
-        int windowSum = 0;
-        int maxSum = 0;
-        int windowStart = 0;
-        for (int windowEnd = 0; windowEnd < findMaxSumSubArray.size() -1; windowEnd++)
+    int findMaxSumSubArray(int k, const vector<int>& arr) {
+      int maxSum = 0;
+      // TODO: Write your code here
+      int leftIdx = 0;
+      int endIdx = 0;
+      int windowSum=0;
+      for (endIdx = 0; endIdx < arr.size(); endIdx++)
+      {
+        windowSum += arr[endIdx];
+        if (endIdx >= k - 1)
         {
-            windowSum += arr[windowEnd];
-            if( windowEnd >= k - 1)
-            {
-                maxSum = max(maxSum, windowStart);
-                windowSum -= arr[windowStart++];
-            }
+          maxSum = max(maxSum, windowSum);
+          windowSum -= arr[leftIdx];
+          leftIdx ++;            
         }
-        return maxSum;
+        
+      }
+      return maxSum;
     }
-  };        
+  };       
 
   int main(int argc, char *argv[])
 {
