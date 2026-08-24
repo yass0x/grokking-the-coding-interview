@@ -10,19 +10,18 @@ public:
   int searchTriplet(vector<int>& arr, int targetSum) {
     // TODO: Write your code here
     sort(arr.begin(), arr.end());
-    int minSum = std::numeric_limits<int>::max();
+    int Diff = std::numeric_limits<int>::max();
 
     for (int  i = 0; i < arr.size() -2; i++)
     {
-        if (arr[i] > 0 && arr[i] == arr[i-1])
-        {
-            continue;
-        } 
-        int currentMinSum = findCurrentMinClosestSumToTarget(arr, (targetSum - arr[i]), i + 1);
-        minSum = min(minSum, targetSum - currentMinSum - arr[i]); 
+
+        int currentPointersSum = findCurrentMinClosestSumToTarget(arr, (targetSum - arr[i]), i + 1);
+        if (targetSum - currentPointersSum - arr[i] > 0)
+
+        Diff = min(Diff, targetSum - currentPointersSum - arr[i]);   
     }
     
-    return targetSum - minSum;
+    return targetSum - Diff;
   }
 
   private:
@@ -36,22 +35,16 @@ public:
         int currentSum = arr[leftIdx] + arr[rightIdx];
         if (Sum > currentSum)
         {
-            minDiff = (minDiff, Sum - currentSum);
+            minDiff = min(minDiff, Sum - currentSum);
             leftIdx++;
-            while (leftIdx < rightIdx && arr[leftIdx] == arr[leftIdx -1])
-            {
-                leftIdx++;
-            }
+
             
         }
         else if(Sum < currentSum)
         {
-            minDiff = (minDiff, currentSum- Sum);
+            minDiff = min(minDiff, currentSum- Sum);
             rightIdx--;
-            while (leftIdx < rightIdx && arr[rightIdx] == arr[rightIdx+1])
-            {
-                rightIdx--;
-            }
+
             
         }
         else
@@ -60,14 +53,14 @@ public:
             break;
         }
     }   
-    return minDiff;
+    return Sum - minDiff;
   }
 };
 
 int main(int argc, char* argv[]) {
   Solution sol;
-  vector<int> vec = {-1, 0, 2, 3};
-  cout << sol.searchTriplet(vec, 3) << endl;
+  vector<int> vec = {39, -55, 11, 69, 4, -9, 6, 23};
+  cout << sol.searchTriplet(vec, -72) << endl;
   vec = {-3, -1, 1, 2};
   cout << sol.searchTriplet(vec, 1) << endl;
   vec = {1, 0, 1, 1};
