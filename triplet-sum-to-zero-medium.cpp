@@ -20,7 +20,6 @@ public:
       
     } 
     
-    return triplets;
   }
 private:
   static void searchPair(vector<int> arr, int targetSum, int leftIdx, vector<vector<int>> triplets)
