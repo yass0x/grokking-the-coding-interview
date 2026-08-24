@@ -10,43 +10,49 @@ public:
     vector<vector<int>> triplets;
     // TODO: Write your code here
     std::sort(arr.begin(), arr.end());
-
-    int leftIdx = 0;
-    int rightIdx = arr.size() -1;
-    int thirdElement = 0;
-    int i = 0;
-
-    while (leftIdx < rightIdx)
+    for (int  i = 0; i < arr.size() -2; i++)
     {
-        /* code */
-        if (arr[leftIdx] + arr[rightIdx] < 0)
-        {
-            if(arr[leftIdx] + arr[rightIdx] + arr[rightIdx-1] == 0)
-            {
-                triplets[i] = {arr[leftIdx], arr[rightIdx], arr[rightIdx-1]};
-                i++;
-
-            }
-            leftIdx ++;
-        }
-        if (arr[leftIdx] + arr[rightIdx] > 0)
-        {
-            if(arr[rightIdx] + arr[leftIdx] + arr[leftIdx+1] == 0)
-            {
-                triplets[i] = {arr[leftIdx], arr[rightIdx], arr[rightIdx+1]};
-                i++;
-                leftIdx ++;
-                rightIdx +=2;
-            }
-            else
-            {
-                leftIdx ++;
-                            
-            }           
-        }
-    }
+      if (i > 0 && arr[i] != arr[i+1])
+      {
+        continue;;
+      }
+      searchPair(arr, -arr[i], i + 1, triplets);
+      
+    } 
     
     return triplets;
+  }
+private:
+  static void searchPair(vector<int> arr, int targetSum, int leftIdx, vector<vector<int>> triplets)
+  {
+    int rightIdx = arr.size() - 1;
+    while (leftIdx < rightIdx)
+    {
+      int currentSum = arr[leftIdx] + arr[rightIdx];
+      if(currentSum == targetSum)
+      {
+        triplets.push_back({-targetSum, arr[leftIdx], arr[rightIdx]});
+        leftIdx++;
+        rightIdx--;
+        while (leftIdx < rightIdx && arr[leftIdx] == arr[leftIdx -1])
+        {
+          leftIdx++;
+        }
+        while (leftIdx < rightIdx && arr[rightIdx] == arr[rightIdx +1])
+        {
+          rightIdx--;
+        }     
+      }
+      else if(currentSum > targetSum)
+      {
+        rightIdx--;
+      }
+      else
+      {
+        leftIdx++;
+      }
+    }
+    
   }
 };
 
