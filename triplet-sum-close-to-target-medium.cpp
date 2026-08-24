@@ -12,21 +12,21 @@ public:
     sort(arr.begin(), arr.end());
     int minSum = std::numeric_limits<int>::max();
 
-    for (int  i = 0; i < arr.size() -1; i++)
+    for (int  i = 0; i < arr.size() -2; i++)
     {
         if (arr[i] > 0 && arr[i] == arr[i-1])
         {
             continue;
         } 
-        int currentMinSum = findCurrentMinClosestSumToTarget(arr, -(targetSum - arr[i]), i + 1);
-        minSum = min(minSum, currentMinSum); 
+        int currentMinSum = findCurrentMinClosestSumToTarget(arr, (targetSum - arr[i]), i + 1);
+        minSum = min(minSum, targetSum - currentMinSum - arr[i]); 
     }
     
-    return minSum;
+    return targetSum - minSum;
   }
 
   private:
-   static int findCurrentMinClosestSumToTarget(vector<int> arr, int targetSum, int leftIdx)
+   static int findCurrentMinClosestSumToTarget(vector<int> arr, int Sum, int leftIdx)
   {
     int rightIdx = arr.size() - 1;
 
@@ -34,28 +34,30 @@ public:
     while (leftIdx < rightIdx)  
     {
         int currentSum = arr[leftIdx] + arr[rightIdx];
-        if (targetSum > currentSum)
+        if (Sum > currentSum)
         {
-            minDiff = (minDiff, targetSum - currentSum);
+            minDiff = (minDiff, Sum - currentSum);
             leftIdx++;
+            while (leftIdx < rightIdx && arr[leftIdx] == arr[leftIdx -1])
+            {
+                leftIdx++;
+            }
+            
         }
-        else if(targetSum < currentSum)
+        else if(Sum < currentSum)
         {
-            minDiff = (minDiff, currentSum- targetSum);
+            minDiff = (minDiff, currentSum- Sum);
             rightIdx--;
+            while (leftIdx < rightIdx && arr[rightIdx] == arr[rightIdx+1])
+            {
+                rightIdx--;
+            }
+            
         }
         else
         {
             minDiff = 0;
             break;
-        }
-        while (leftIdx < rightIdx && arr[leftIdx] == arr[leftIdx -1])
-        {
-            leftIdx++;
-        }
-        while (leftIdx < rightIdx && arr[rightIdx] == arr[rightIdx +1])
-        {
-            rightIdx--;
         }
     }   
     return minDiff;
@@ -65,7 +67,7 @@ public:
 int main(int argc, char* argv[]) {
   Solution sol;
   vector<int> vec = {-1, 0, 2, 3};
-  cout << sol.searchTriplet(vec, 2) << endl;
+  cout << sol.searchTriplet(vec, 3) << endl;
   vec = {-3, -1, 1, 2};
   cout << sol.searchTriplet(vec, 1) << endl;
   vec = {1, 0, 1, 1};
