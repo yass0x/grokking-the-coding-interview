@@ -4,7 +4,7 @@ using namespace std;
 #include <iostream>
 #include <vector>
 
-/*class Interval {
+class Interval {
 public:
   int start = 0;
   int end = 0;
@@ -13,14 +13,37 @@ public:
     this->start = start;
     this->end = end;
   }
-};*/
+};
 
 class Solution {
 public:
   vector<Interval> merge(vector<Interval> &intervals) {
     vector<Interval> mergedIntervals;
     // TODO: Write your code here
+    sort(intervals.begin(), intervals.end(), customComparison);
+
+    Interval current = intervals[0];
+    for (int i = 1; i < intervals.size(); i++)
+    {
+        if (intervals[i].start <= current.end)
+        {
+            current.end = max(intervals[i].end, current.end);
+        }
+        else
+        {
+            mergedIntervals.push_back(current);
+            current = intervals[i];
+        }
+    }
+    mergedIntervals.push_back(current);
+     
     return mergedIntervals;
+  }
+
+private: 
+static  bool customComparison (Interval a, Interval b)
+  {
+    return a.start < b.start;
   }
 };
 
