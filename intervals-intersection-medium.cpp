@@ -20,28 +20,36 @@ public:
                                 const vector<Interval> &arr2) {
     vector<Interval> result;
     // TODO: Write your code here
-    
-    for (int  j = 0; j < arr2.size(); j++)
+    int i = 0; int j = 0;
+    while (i < arr1.size() &&  j < arr2.size())
     {
-       int i = 0; 
-        while(i < arr1.size() && arr1[i].start <= arr2[j].end)
+        if (arr2[j].start <= arr1[i].end && arr2[j].end >= arr1[i].start)
         {
-            if (arr1[i].end >= arr2[j].start)
-            {
-                Interval currentInterval = {max(arr1[i].start, arr2[j].start), min(arr1[i].end, arr2[j].end)};
-                result.push_back(currentInterval);
-            }
+            result.push_back({max(arr1[i].start, arr2[j].start),min(arr1[i].end, arr2[j].end)});
+        }
+        if (arr1[i].end > arr2[j].end)
+        {
+            j++;
+        }
+        else if (arr1[i].end < arr2[j].end)
+        {
             i++;
         }
+        else
+        {
+            i++;
+            j++;
+        }
     }
+    
     return result;
   }
 };
 
 int main(int argc, char *argv[]) {
   Solution sol;
-  vector<Interval> input1 = {{1, 3}, {5, 6}, {7, 9}};
-  vector<Interval> input2 = {{2, 3}, {5, 7}};
+  vector<Interval> input1 = {{1, 5}, {10, 15}, {20, 25}};
+  vector<Interval> input2 = {{2, 6}, {8, 12}, {18, 22}};
   vector<Interval> result = sol.merge(input1, input2);
   cout << "Intervals Intersection: ";
   for (auto interval : result) {
