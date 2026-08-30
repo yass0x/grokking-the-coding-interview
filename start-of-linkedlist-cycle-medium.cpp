@@ -16,22 +16,28 @@ class Solution {
 public:
   ListNode *findCycleStart(ListNode *head) {
     // TODO: Write your code here
-    ListNode *slowPtr = head;
-    ListNode *fastPtr = head;
-
-    int cycleLenght = findCycleLenght(slowPtr, fastPtr);
+    int cycleLenght = findCycleLenght(head);
 
     return findCycleStart(head, cycleLenght);
   }
 
 private: 
 
-  static int findCycleLenght(ListNode *slowPtr, ListNode *fastPtr)
+  static int findCycleLenght(ListNode *head)
   {
-    while (slowPtr != fastPtr)
+           
+    ListNode *slowPtr = head;
+    ListNode *fastPtr = head;
+
+    while (fastPtr -> next != nullptr && fastPtr -> next -> next != nullptr)
     {
-        slowPtr = slowPtr -> next;
-        fastPtr = fastPtr -> next -> next;
+       slowPtr = slowPtr -> next;
+       fastPtr = fastPtr -> next -> next;
+       if (slowPtr == fastPtr)
+       {
+            break;
+       }
+       
     }
 
     int cycleLenght = 1;
@@ -77,14 +83,14 @@ int main(int argc, char *argv[]) {
   head->next->next->next->next->next = new ListNode(6);
 
   // Create a cycle by connecting nodes
-  /*head->next->next->next->next->next->next = head->next->next;
+  head->next->next->next->next->next->next = head->next->next;
   cout << "LinkedList cycle start: " 
-      << sol.findCycleStart(head)->val << endl;*/
+      << sol.findCycleStart(head)->val << endl;
 
   // Create a different cycle
-  /*head->next->next->next->next->next->next = head->next->next->next;
+  head->next->next->next->next->next->next = head->next->next->next;
   cout << "LinkedList cycle start: " 
-      << sol.findCycleStart(head)->val << endl;*/
+      << sol.findCycleStart(head)->val << endl;
 
   // Create a cycle that points back to the head
  head->next->next->next->next->next->next = head;
