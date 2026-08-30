@@ -16,34 +16,54 @@ class Solution {
 public:
   ListNode *findCycleStart(ListNode *head) {
     // TODO: Write your code here
-    ListNode *fastPtr = head;
     ListNode *slowPtr = head;
-    while (fastPtr ->next != nullptr && fastPtr -> next -> next != nullptr)
+    ListNode *fastPtr = head;
+
+    int cycleLenght = findCycleLenght(slowPtr, fastPtr);
+
+    return findCycleStart(head, cycleLenght);
+  }
+
+private: 
+
+  static int findCycleLenght(ListNode *slowPtr, ListNode *fastPtr)
+  {
+    while (slowPtr != fastPtr)
     {
-        fastPtr = fastPtr ->next -> next;
-        slowPtr = slowPtr ->next ;
-        if (slowPtr == fastPtr)
-        {
-            break;
-        }
+        slowPtr = slowPtr -> next;
+        fastPtr = fastPtr -> next -> next;
     }
 
-    ListNode *startPtr = head;
-    while ( startPtr != slowPtr)
+    int cycleLenght = 1;
+    fastPtr = fastPtr ->next;
+    while (slowPtr != fastPtr)
     {
-        fastPtr = slowPtr ->next;
-        while (fastPtr != slowPtr)
-        {
-            if (fastPtr == startPtr)
-            {
-                return startPtr;
-            }
-            fastPtr = fastPtr ->next;
-        }
-        startPtr = startPtr -> next;
-    } 
-    startPtr = slowPtr;
-    return startPtr;
+        cycleLenght++;
+        fastPtr = fastPtr -> next;
+    }
+    return cycleLenght;
+  }
+  static ListNode* findCycleStart (ListNode *head, int cycleLenght)
+  {
+    ListNode *cycleStartNode = head;
+    ListNode *nodeComparator = head;
+    
+    while (cycleLenght != 0)
+    {
+        /* code */
+        nodeComparator = nodeComparator ->next;
+        cycleLenght--;
+    }
+
+    while (nodeComparator != cycleStartNode)
+    {
+        /* code */
+        nodeComparator = nodeComparator -> next;
+        cycleStartNode = cycleStartNode -> next;
+    }
+
+    return cycleStartNode;
+    
   }
 };
 
