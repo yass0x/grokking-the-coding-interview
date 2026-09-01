@@ -17,66 +17,61 @@ class Solution {
 public:
   bool isPalindrome(ListNode *head) {
     // TODO: Write your code here
+    /* Solution 2: solve using reverseing the linked list */
+
+    bool retVal = true;
+
+    /* Find the mid-point */
+    ListNode *midPoint = findMidPoint(head); 
+    
+
+    /* Reverse Second Half */
+    ReverseLinkedList(midPoint);
+
+    ListNode *SecondhalfStart = midPoint ;
+    ListNode *FirsthalfStart = head;
+
+    /* Compare the two halves */
+    while (FirsthalfStart != nullptr && SecondhalfStart != nullptr)
+    {
+        if (FirsthalfStart -> val != SecondhalfStart -> val)
+        {
+            retVal = false;
+            break;
+        }  
+        FirsthalfStart = FirsthalfStart -> next;
+        SecondhalfStart = SecondhalfStart -> next; 
+    }
+    /* Revert back the change */
+    ReverseLinkedList(midPoint);
+    return retVal;
+  }
+private: 
+  static ListNode* findMidPoint(ListNode *head)
+  {
     ListNode *slowPtr = head;
     ListNode *fastPtr = head;
-
-    while (fastPtr -> next != nullptr && fastPtr ->next -> next != nullptr)
+    while (fastPtr != nullptr && fastPtr -> next != nullptr)
     {
         slowPtr = slowPtr -> next;
         fastPtr = fastPtr -> next -> next;
     }
+    return slowPtr;
+  }
 
-    ListNode *firstHalf = head;
-    ListNode *secodnHalf = slowPtr ->next ;
-    int OperationFirstHalf = 0;
-    int OperationSecondHalf = 0;
-    int multiplier = 1;
+  static void ReverseLinkedList(ListNode* &head)
+  {
+    ListNode *prev = nullptr;
+    ListNode *next = head -> next;
 
-    if(fastPtr ->next == nullptr)
+    while (next != nullptr)
     {
-        while (firstHalf != slowPtr)
-        {
-            OperationFirstHalf += (firstHalf->val * multiplier);
-            multiplier *= 10;
-            firstHalf = firstHalf -> next; 
-        }
-        multiplier /= 10;
-        while (secodnHalf != nullptr)
-        {
-            OperationSecondHalf += (secodnHalf -> val * multiplier);
-            multiplier /= 10;
-            secodnHalf = secodnHalf ->next;
-        }
-
-        if (OperationFirstHalf == OperationSecondHalf)
-        {
-            return true;
-        }
-        
+        head -> next = prev;
+        prev = head;
+        head = next;
+        next = next -> next;
     }
-    else
-    {
-        while (firstHalf != slowPtr -> next)
-        {
-            OperationFirstHalf += (firstHalf->val * multiplier);
-            multiplier *= 10;
-            firstHalf = firstHalf -> next; 
-        }
-        multiplier /= 10;
-        while (secodnHalf != nullptr)
-        {
-            OperationSecondHalf += (secodnHalf -> val * multiplier);
-            multiplier /= 10;
-            secodnHalf = secodnHalf ->next;
-        }
-
-        if (OperationFirstHalf == OperationSecondHalf)
-        {
-            return true;
-        }
-    }
-    
-    return false;
+    head -> next = prev;
   }
 };
 
@@ -86,12 +81,12 @@ int main(int argc, char *argv[]) {
   /* cout << sizeof(int) << endl; */
   head->next = new ListNode(4);
   head->next->next = new ListNode(6);
-  head->next->next->next = new ListNode(6);
-  head->next->next->next->next = new ListNode(4);
-  head->next->next->next->next->next = new ListNode(2);
+  /* head->next->next->next = new ListNode(6); */
+  head->next->next->next/* ->next */ = new ListNode(4);
+  head->next->next->next->next /* ->next */ = new ListNode(5);
   cout << "Is palindrome: " << sol.isPalindrome(head) << endl;
 
-  head->next->next->next->next->next = new ListNode(5);
-  cout << "Is palindrome: " << sol.isPalindrome(head) << endl;
+ /*head->next->next->next->next->next = new ListNode(5);
+  cout << "Is palindrome: " << sol.isPalindrome(head) << endl; */
 }
 
