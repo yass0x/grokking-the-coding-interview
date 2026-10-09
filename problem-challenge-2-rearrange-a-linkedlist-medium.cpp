@@ -27,11 +27,11 @@ public:
 
     ListNode *travesePtr = head;
     ListNode *currentNode = midPoint;
-    while (travesePtr != nullptr && travesePtr -> next != nullptr)
+    while (travesePtr != nullptr && travesePtr -> next != nullptr && midPoint -> next != nullptr)
     {
-         removeNode(midPoint, currentNode);
-         insertNode(travesePtr, currentNode);
-         travesePtr = travesePtr -> next -> next;
+        removeNode(midPoint, currentNode);
+        insertNode(travesePtr, currentNode);
+        travesePtr = travesePtr -> next -> next;
     }
     return head;
   }
@@ -45,7 +45,7 @@ private:
         fastPtr = fastPtr -> next -> next;
     }
   }
-  static void reverseLinkedList(ListNode *head)
+  static void reverseLinkedList(ListNode *&head)
   {
     ListNode *Previous = nullptr;
     ListNode *next = head -> next;
@@ -57,6 +57,7 @@ private:
         next = next -> next;
     }
     head -> next = Previous;
+
   }
   static void insertNode(ListNode * &head, ListNode * &newNode)
   {
@@ -66,19 +67,23 @@ private:
   }
   static void removeNode(ListNode * &head, ListNode* &removedNode)
   {
-    removedNode = head;
-    removedNode -> next = nullptr;
-    head = head -> next;
+    if(head != nullptr)
+    {
+        removedNode = head;
+        head = head -> next;
+        removedNode -> next = nullptr;
+    }
+
   }
 };
 
 int main(int argc, char *argv[]) {
   Solution sol;
-  ListNode *head = new ListNode(2);
-  head->next = new ListNode(4);
-  head->next->next = new ListNode(6);
+  ListNode *head = new ListNode(1);
+  head->next = new ListNode(3);
+  head->next->next = new ListNode(5);
   head->next->next->next = new ListNode(6); 
   head->next->next->next ->next  = new ListNode(4);
-  head->next->next->next->next ->next = new ListNode(5);
+  head->next->next->next->next ->next = new ListNode(2);
   cout << "Is palindrome: " << sol.reorder(head) << endl;
 }
